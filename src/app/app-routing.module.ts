@@ -23,6 +23,10 @@ const routes: Routes = [
     data: { authGuardPipe: redirectLoggedIn },
   },
   // {
+  //   path: 'profile',
+  //   loadChildren: () => import('./shared/profile/profile.module').then( m => m.ProfilePageModule)
+  // },
+  // {
   //   path: 'signin',
   //   loadChildren: () => import('./auth/signin/signin.module').then((m) => m.SigninPageModule),
   // },
