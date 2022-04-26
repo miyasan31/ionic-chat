@@ -1,14 +1,16 @@
 <ion-header>
   <ion-toolbar>
     <ion-title> チャット </ion-title>
+    <ion-buttons slot="end">
+      <ion-button size="small" fill="clear" (click)="postMessage()" [disabled]="!f.form.valid"
+        >送信</ion-button
+      >
+    </ion-buttons>
   </ion-toolbar>
-  <ion-buttons slot="end">
-    <ion-button size="small" fill="clear">送信</ion-button>
-  </ion-buttons>
 
   <ion-toolbar color="primary" style="padding: 4px 8px">
     <ion-avatar slot="start" style="width: 36px; height: 36px">
-      <img src="/assets/shapes.svg" />
+      <img [src]="user?.photoDataUrl || '/assets/shapes.svg'" />
     </ion-avatar>
 
     <form #f="ngForm">
@@ -27,20 +29,20 @@
 
 <ion-content>
   <ion-list class="ion-padding-top">
-    <ion-item lines="none" *ngFor="let m of [1, 2, 3, 4, 5]">
+    <ion-item lines="none" *ngFor="let c of chat | async; trackBy: trackByFn">
       <ion-avatar slot="start">
-        <img src="/assets/shapes.svg" *ngIf="m !== 3" />
+        <img [src]="c?.photoDataUrl || '/assets/shapes.svg'" *ngIf="c.uid !== uid" />
       </ion-avatar>
       <ion-label
         class="ion-padding ion-text-wrap"
         style="background-color: var(--ion-color-light-tint); border-radius: 12px"
-        [class.ion-margin-end]="m !== 3"
-        [class.ion-margin-start]="m === 3"
+        [class.ion-margin-end]="c.uid !== uid"
+        [class.ion-margin-start]="c.uid === uid"
       >
         <div class="ion-text-nowrap">
-          <strong>表示名</strong>
+          <strong>{{ c.displayName }}</strong>
         </div>
-        メッセージ
+        メッセージ {{ c.message }}
       </ion-label>
     </ion-item>
   </ion-list>
