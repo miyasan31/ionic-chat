@@ -4,6 +4,7 @@ import { RouteReuseStrategy } from '@angular/router';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFireAuthGuard } from '@angular/fire/compat/auth-guard';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
@@ -25,6 +26,7 @@ import { environment } from 'src/environments/environment';
   providers: [
     StatusBar,
     SplashScreen,
+    AngularFirestore,
     AngularFireAuthGuard,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
   ],
