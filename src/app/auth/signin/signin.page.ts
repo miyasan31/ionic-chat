@@ -1,4 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../auth.service';
+
+type Form = {
+  email: string;
+  password: string;
+};
 
 @Component({
   selector: 'app-signin',
@@ -6,7 +12,20 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./signin.page.scss'],
 })
 export class SigninPage implements OnInit {
-  constructor() {}
+  loading = false;
+  login: Form = {
+    email: '',
+    password: '',
+  };
+
+  constructor(public auth: AuthService) {}
 
   ngOnInit() {}
+
+  signIn() {
+    this.loading = true;
+    this.auth.authSignIn(this.login).finally(() => {
+      this.loading = false;
+    });
+  }
 }
