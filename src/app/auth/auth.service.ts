@@ -1,5 +1,11 @@
 import { Injectable } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
+// import { AngularFireAuth } from '@angular/fire/compat/auth';
+import {
+  Auth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+} from '@angular/fire/auth';
 import { NavController, AlertController } from '@ionic/angular';
 import { firebaseError } from './firebase.error';
 
@@ -8,7 +14,7 @@ import { firebaseError } from './firebase.error';
 })
 export class AuthService {
   constructor(
-    public afAuth: AngularFireAuth,
+    public afAuth: Auth,
     public navController: NavController,
     public alertController: AlertController,
   ) {}
@@ -18,7 +24,7 @@ export class AuthService {
   }
 
   authSignUp(login: { email: string; password: string }) {
-    return this.afAuth.createUserWithEmailAndPassword(login.email, login.password).then(() => {
+    return createUserWithEmailAndPassword(this.afAuth, login.email, login.password).then(() => {
       this.navController.navigateForward('/').catch((error) => {
         console.log(error.message);
         this.alertError(error);
@@ -28,7 +34,7 @@ export class AuthService {
   }
 
   authSignIn(login: { email: string; password: string }) {
-    return this.afAuth.signInWithEmailAndPassword(login.email, login.password).then(() => {
+    return signInWithEmailAndPassword(this.afAuth, login.email, login.password).then(() => {
       this.navController.navigateForward('/').catch((error) => {
         console.log(error.message);
         this.alertError(error);
@@ -38,7 +44,7 @@ export class AuthService {
   }
 
   authSignOut() {
-    return this.afAuth.signOut().then(() => {
+    return signOut(this.afAuth).then(() => {
       this.navController.navigateForward('/auth/signin').catch((error) => {
         console.log(error.message);
         this.alertError(error);
