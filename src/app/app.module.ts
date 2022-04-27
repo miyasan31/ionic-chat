@@ -9,9 +9,14 @@ import { RouteReuseStrategy } from '@angular/router';
 // import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 // new
-import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
+import { provideFirebaseApp, initializeApp, getApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore, Firestore } from '@angular/fire/firestore';
-import { provideAuth, getAuth } from '@angular/fire/auth';
+import {
+  provideAuth,
+  getAuth,
+  initializeAuth,
+  indexedDBLocalPersistence,
+} from '@angular/fire/auth';
 import { AuthGuard } from '@angular/fire/auth-guard';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
@@ -21,6 +26,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { environment } from 'src/environments/environment';
+import { Capacitor } from '@capacitor/core';
 
 @NgModule({
   declarations: [AppComponent],
@@ -33,7 +39,16 @@ import { environment } from 'src/environments/environment';
     provideFirebaseApp(() => initializeApp(environment.firebase)),
 
     // AngularFireAuthModule,
-    provideAuth(() => getAuth()),
+    // provideAuth(() => getAuth()),
+    provideAuth(() => {
+      if (Capacitor.isNativePlatform()) {
+        return initializeAuth(getApp(), {
+          persistence: indexedDBLocalPersistence,
+        });
+      } else {
+        return getAuth();
+      }
+    }),
 
     // firestore
     provideFirestore(() => getFirestore()),
